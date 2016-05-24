@@ -1,12 +1,12 @@
 {
   "name": "google-play-keywords",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tools for app store optimisation on Google Play",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Facundo Olano",
   "license": "ISC",
   "dependencies": {
     "google-play-scraper": "^1.0.5",
