@@ -1,7 +1,7 @@
 {
   "name": "google-play-keywords",
-  "version": "1.0.0",
-  "description": "Tools for app store optimisation on Google Play",
+  "version": "0.1.0",
+  "description": "Tools for app store optimization on Google Play",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
