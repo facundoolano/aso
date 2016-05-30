@@ -14,37 +14,6 @@ npm install google-play-keywords
 
 ## API Reference
 
-### App keywords
-
-The `app` function returns an array of keywords extracted from the description
-of the app. The only argument is the Google Play ID of the application (the `?id=` parameter on the url).
-
-```js
-const keywords = require('google-play-keywords');
-
-keywords.app('com.dxco.pandavszombies').then(console.log)
-```
-
-Returns:
-
-```js
-[
-  'panda',
-  'rocky',
-  'zombie',
-  'panda vs zombie',
-  'elvis',
-  'undead',
-  'time',
-  'game',
-  'vs',
-  (...)
-]
-```
-
-[retext-keywords](https://github.com/wooorm/retext-keywords) is used to extract the keywords
-from the app description.
-
 ### Keyword scores
 
 The `scores` function gathers several statistics about a keyword and builds
@@ -157,3 +126,34 @@ The avaliable strategies are:
 
 A common flow of work would be to try all the strategies for a given app, hand pick the most interesting
 keywords and then run the `scores` function on them to analize their quality.
+
+### App keywords
+
+The `app` function returns an array of keywords extracted from the description
+of the app. The only argument is the Google Play ID of the application (the `?id=` parameter on the url).
+
+```js
+const keywords = require('google-play-keywords');
+
+keywords.app('com.dxco.pandavszombies').then(console.log)
+```
+
+Returns:
+
+```js
+[
+  'panda',
+  'rocky',
+  'zombie',
+  'panda vs zombie',
+  'elvis',
+  'undead',
+  'time',
+  'game',
+  'vs',
+  (...)
+]
+```
+
+[retext-keywords](https://github.com/wooorm/retext-keywords) is used to extract the keywords
+from the app description.
