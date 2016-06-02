@@ -1,6 +1,6 @@
 {
   "name": "google-play-keywords",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools for app store optimization on Google Play",
   "main": "index.js",
   "scripts": {
