@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "google-play-scraper": "^1.0.5",
+    "nlcst-to-string": "^1.1.0",
     "ramda": "^0.21.0",
     "retext": "^2.0.0",
     "retext-keywords": "^1.0.1"
