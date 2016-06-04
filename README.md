@@ -1,18 +1,35 @@
-# google-play-keywords
+# App Store Optimization (aso)
 
-This Node.js library provides a set of functions to aid [App Store Optimization](https://en.wikipedia.org/wiki/App_store_optimization) of applications in Google Play.
+This Node.js library provides a set of functions to aid [App Store Optimization](https://en.wikipedia.org/wiki/App_store_optimization) of applications in iTunes and Google Play.
 
-All the functions use [google-play-scraper](https://github.com/facundoolano/google-play-scraper) to
+The functions use either [google-play-scraper](https://github.com/facundoolano/google-play-scraper)
+or [app-store-scraper](https://github.com/facundoolano/app-store-scraper) to
 gather data, so bear in mind a lot of requests are performed under the hood
 and you may hit throttling limits when making too many calls in a short period of time.
 
 ## Installation
 
 ```
-npm install google-play-keywords
+npm install aso
 ```
 
 ## API Reference
+
+The same API is exposed for the iTunes and Google Play stores through the `itunes`
+and `gplay` objects respectively:
+
+```js
+const gplay = require('aso').gplay;
+const itunes = require('aso').itunes;
+
+// do stuff with google play
+gplay.scores('panda').then(console.log);
+
+// do stuff with itunes
+itunes.scores('panda').then(console.log);
+```
+
+The behaviour of the algorithms is the same for both stores, except where noted.
 
 ### Keyword scores
 
@@ -20,12 +37,12 @@ The `scores` function gathers several statistics about a keyword and builds
 `difficulty` and `traffic` scores that can be used to evaluate the
 convenience of targeting that keyword.
 
-The only argument is the keyword:
+The only argument is the keyword itself:
 
 ```js
-const keywords = require('google-play-keywords');
+const aso = require('aso').gplay;
 
-keywords.scores('panda').then(console.log)
+aso.scores('panda').then(console.log)
 ```
 
 Returns:
@@ -67,7 +84,8 @@ broad (contains all the words in a different order), partial (contains some of t
 words), none (does not contain any of the words).
 * `competitors`: counts how many of the top 100 apps for the keyword actually
 target that keyword in their title and description.
-* `installs`: measures the average amount of installs of the top 10 apps.
+* `installs`: measures the average amount of installs of the top 10 apps. Since iTunes
+does not expose the amount of installs, the reviews count is used instead.
 * `rating`: measures the average rating of the top 10 apps.
 * `age`: measures the average time since the apps in the top 10 have been updated.
 
@@ -79,11 +97,12 @@ A high score means high traffic and therefore a better keyword candidate.
 
 The properties considered for this score are:
 
-* `suggest`: the amount of characters needed for the keyword to come up as a
-suggestion in the Google Play search box, and the position in the suggestions list.
+* `suggest`: For Google Play the amount of characters needed for the keyword to come up as a
+suggestion in the search box, and the position in the suggestions list. iTunes already
+scores their suggest results, so that number is used instead.
 * `ranked`: the amount of apps in the top 10 of the keyword that appear in their
 category rankings, and the average ranking of those that do.
-* `installs`: measures the average amount of installs of the top 10 apps.
+* `installs`: same metric as in difficulty, but with a lower weight in the overall score.
 * `length`: length of the keyword (less traffic is assumed for longer keywords).
 
 ### Keyword suggestions
@@ -92,12 +111,12 @@ The `suggest` function returns a list of suggestions consisting
 of the most commonly used keywords among a given set of apps. There are several
 strategies to select that set of apps.
 
-The function takes an app ID and a strategy, which defaults to `keywords.suggest.SIMILAR`:
+The function takes an app ID and a strategy, which defaults to `CATEGORY`:
 
 ```js
-const keywords = require('google-play-keywords');
+const aso = require('aso').gplay;
 
-keywords.suggest('com.dxco.pandavszombies', keywords.suggest.SIMILAR).then(console.log)
+aso.suggest('com.dxco.pandavszombies', aso.SIMILAR).then(console.log)
 ```
 
 Returns:
@@ -117,12 +136,12 @@ Returns:
 ]
 ```
 
-Using the `keywords.suggest.KEYWORDS` strategy:
+Using the `KEYWORDS` strategy:
 
 ```js
-const keywords = require('google-play-keywords');
+const aso = require('aso').itunes;
 
-keywords.suggest(['panda', 'zombie', 'waves', 'undead'], keywords.suggest.KEYWORDS).then(console.log)
+aso.suggest(['panda', 'zombie', 'waves', 'undead'], aso.KEYWORDS).then(console.log)
 ```
 
 Returns:
@@ -140,12 +159,12 @@ Returns:
 ```
 
 The avaliable strategies are:
-  * `keywords.suggest.SIMILAR`: looks at apps marked by Google Play as "similar" to the one given.
-  * `keywords.suggest.CATEGORY`: looks at apps in the same category as the one given.
-  * `keywords.suggest.COMPETITION`: looks at apps that target the same keywords as the one given. Note this strategy is expensive so it may require around a minute to resolve.
-  * `keywords.suggest.ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
+  * `CATEGORY`: looks at apps in the same category as the one given.
+  * `SIMILAR`: looks at apps marked by Google Play as "similar" to the one given (only available for the Google Play store).
+  * `COMPETITION`: looks at apps that target the same keywords as the one given. Note this strategy is expensive so it may require around a minute to resolve.
+  * `ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
   application IDs instead of a single one.
-  * `keywords.suggest.KEYWORDS`: look at apps that target one of the given seed keywords. For this strategy, the first argument should be an array of keywords.
+  * `KEYWORDS`: look at apps that target one of the given seed keywords. For this strategy, the first argument should be an array of keywords.
 
 A common flow of work would be to try all the strategies for a given app, hand pick the most interesting
 keywords and then run the `scores` function on them to analize their quality.
@@ -156,9 +175,9 @@ The `app` function returns an array of keywords extracted from title and descrip
 of the app. The only argument is the Google Play ID of the application (the `?id=` parameter on the url).
 
 ```js
-const keywords = require('google-play-keywords');
+const aso = require('aso').gplay;
 
-keywords.app('com.dxco.pandavszombies').then(console.log)
+aso.app('com.dxco.pandavszombies').then(console.log)
 ```
 
 Returns:
@@ -179,4 +198,19 @@ Returns:
 ```
 
 [retext-keywords](https://github.com/wooorm/retext-keywords) is used to extract the keywords
-from the app description.
+from the app title and description.
+
+#### A note on keyword relevancy for iTunes
+
+As said, the algorithm used by the `app` function extracts the keywords from title and
+description. This algorithm is also used internally by the `scores` and
+`suggest` functions.
+
+While in all cases the most important place to look at for keywords is the title,
+the app description is usually less relevant in the iTunes app store, since there's
+a specific keywords list field when submitting the app. Unfortunately the contents
+of that field are not (that I know of) reachable from any public page or API. So
+keywords based on description may not have a big weight on iTunes searches.
+
+Google Play, on the other hand, doesn't have a keywords field and so the description is
+expected to contain most of the app's targeted keywords.
