@@ -66,7 +66,7 @@ to how well they match the words that make it: exact (contains all the words, in
 broad (contains all the words in a different order), partial (contains some of the
 words), none (does not contain any of the words).
 * `competitors`: counts how many of the top 100 apps for the keyword actually
-target that keyword in their description.
+target that keyword in their title and description.
 * `installs`: measures the average amount of installs of the top 10 apps.
 * `rating`: measures the average rating of the top 10 apps.
 * `age`: measures the average time since the apps in the top 10 have been updated.
@@ -117,19 +117,42 @@ Returns:
 ]
 ```
 
+Using the `keywords.suggest.KEYWORDS` strategy:
+
+```js
+const keywords = require('google-play-keywords');
+
+keywords.suggest(['panda', 'zombie', 'waves', 'undead'], keywords.suggest.KEYWORDS).then(console.log)
+```
+
+Returns:
+
+```js
+[
+  'time',
+  'panda',
+  'graphics',
+  'friends',
+  'levels',
+  'facebook',
+  (...)
+]
+```
+
 The avaliable strategies are:
   * `keywords.suggest.SIMILAR`: looks at apps marked by Google Play as "similar" to the one given.
   * `keywords.suggest.CATEGORY`: looks at apps in the same category as the one given.
   * `keywords.suggest.COMPETITION`: looks at apps that target the same keywords as the one given. Note this strategy is expensive so it may require around a minute to resolve.
   * `keywords.suggest.ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
   application IDs instead of a single one.
+  * `keywords.suggest.KEYWORDS`: look at apps that target one of the given seed keywords. For this strategy, the first argument should be an array of keywords.
 
 A common flow of work would be to try all the strategies for a given app, hand pick the most interesting
 keywords and then run the `scores` function on them to analize their quality.
 
 ### App keywords
 
-The `app` function returns an array of keywords extracted from the description
+The `app` function returns an array of keywords extracted from title and description
 of the app. The only argument is the Google Play ID of the application (the `?id=` parameter on the url).
 
 ```js
