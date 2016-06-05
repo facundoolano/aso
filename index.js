@@ -19,5 +19,3 @@ module.exports.itunes = Object.assign({
   scores: buildScores(itunes),
   suggest: buildSuggest(itunes)
 }, constants);
-
-delete module.exports.itunes.SIMILAR;

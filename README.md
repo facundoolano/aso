@@ -160,7 +160,7 @@ Returns:
 
 The avaliable strategies are:
   * `CATEGORY`: looks at apps in the same category as the one given.
-  * `SIMILAR`: looks at apps marked by Google Play as "similar" to the one given (only available for the Google Play store).
+  * `SIMILAR`: looks at apps marked by Google Play as "similar". For iTunes the "customers also bought" apps are used instead (which may not necessarily be similar to given app).
   * `COMPETITION`: looks at apps that target the same keywords as the one given. Note this strategy is expensive so it may require around a minute to resolve.
   * `ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
   application IDs instead of a single one.
