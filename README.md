@@ -165,6 +165,8 @@ The avaliable strategies are:
   * `ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
   application IDs instead of a single one.
   * `KEYWORDS`: look at apps that target one of the given seed keywords. For this strategy, the first argument should be an array of keywords.
+  * `SEARCH`: given a set of seed keywords, infer a new set from the search completion suggestions of each one. Then look at apps that target the resulting keywords. This is expected to work better for iTunes, where the search completion yields more
+  results.
 
 A common flow of work would be to try all the strategies for a given app, hand pick the most interesting
 keywords and then run the `scores` function on them to analize their quality.
