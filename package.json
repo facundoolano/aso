@@ -9,8 +9,8 @@
   "author": "Facundo Olano",
   "license": "ISC",
   "dependencies": {
-    "app-store-scraper": "^0.2.0",
-    "google-play-scraper": "^1.2.1",
+    "app-store-scraper": "^0.3.0",
+    "google-play-scraper": "^1.3.0",
     "nlcst-to-string": "^1.1.0",
     "ramda": "^0.21.0",
     "retext": "^2.0.0",
