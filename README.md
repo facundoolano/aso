@@ -111,65 +111,124 @@ The `suggest` function returns a list of suggestions consisting
 of the most commonly used keywords among a given set of apps. There are several
 strategies to select that set of apps.
 
-The function takes an app ID and a strategy, which defaults to `CATEGORY`:
-
-```js
-const aso = require('aso').gplay;
-
-aso.suggest('com.dxco.pandavszombies', aso.SIMILAR).then(console.log)
-```
-
-Returns:
-
-```js
-[
-  'zombies',
-  'game',
-  'zombie',
-  'shooter',
-  'guns',
-  'apocalypse',
-  'fire',
-  'games',
-  'survivors',
-  (...)
-]
-```
-
-Using the `KEYWORDS` strategy:
-
-```js
-const aso = require('aso').itunes;
-
-aso.suggest(['panda', 'zombie', 'waves', 'undead'], aso.KEYWORDS).then(console.log)
-```
-
-Returns:
-
-```js
-[
-  'time',
-  'panda',
-  'graphics',
-  'friends',
-  'levels',
-  'facebook',
-  (...)
-]
-```
-
-The avaliable strategies are:
-  * `CATEGORY`: looks at apps in the same category as the one given.
-  * `SIMILAR`: looks at apps marked by Google Play as "similar". For iTunes the "customers also bought" apps are used instead (which may not necessarily be similar to given app).
-  * `COMPETITION`: looks at apps that target the same keywords as the one given.
-  * `ARBITRARY`: look at an arbitrary list of apps. For this strategy, the first argument should be an array of
-  application IDs instead of a single one.
-  * `KEYWORDS`: look at apps that target one of the given seed keywords. For this strategy, the first argument should be an array of keywords.
-  * `SEARCH`: given a set of seed keywords, infer a new set from the search completion suggestions of each one. Then look at apps that target the resulting keywords. This is expected to work better for iTunes, where the search completion yields more
-  results.
+This function takes an options object with the following properties:
+* `strategy`: the strategy used to get suggestions. Defaults to `CATEGORY`.
+* `num`: the amount of suggestions to get in the results. Defaults to 30.
+* `appId`: store app ID (for iTunes both numerical and bundle IDs are supported).
+Required for the `CATEGORY`, `SIMILAR` and `COMPETITION` strategies.
+* `apps`: array of store app IDs. Required for the `ARBITRARY` strategy.
+* `keywords`: array of seed keywords. Required for the `KEYWORDS` and `SEARCH` strategies.
 
 A common flow of work would be to try all the strategies for a given app, hand pick the most interesting
 keywords and then run the `scores` function on them to analize their quality.
+
+#### Suggestions by category
+Looks at apps in the same category as the one given.
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.CATEGORY,
+  appId: 'com.dxco.pandavszombies',
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'game', 'world', 'features', 'weapons', 'action' ]
+```
+
+#### Suggestions by similarity
+Looks at apps marked by Google Play as "similar". For iTunes the "customers also bought" apps are used instead (which may not necessarily be similar to the given app).
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.SIMILAR,
+  appId: 'com.dxco.pandavszombies',
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'game', 'zombies', 'zombie', 'weapons', 'action' ]
+```
+
+#### Suggestions by competition
+Looks at apps that target the same keywords as the one given.
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.COMPETITION,
+  appId: 'com.dxco.pandavszombies',
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'game', 'zombies', 'features', 'app', 'zombie' ]
+```
+
+#### Suggestions by an arbitrary list of apps
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.ARBITRARY,
+  appId: ['com.dxco.pandavszombies'],
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'game', 'zombies', 'features', 'app', 'zombie' ]
+```
+
+#### Suggestions based on seed keywords
+Look at apps that target one of the given seed keywords.
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.KEYWORDS,
+  appId: ['panda', 'zombies', 'hordes'],
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'features', 'game', 'zombies', 'panda', 'zombie' ]
+```
+
+#### Suggestions based on search hints
+Given a set of seed keywords, infer a new set from the search completion suggestions of each one. Then look at apps that target the resulting keywords. This is expected to work better for iTunes, where the search completion yields more
+  results.
+
+```js
+const aso = require('./index').gplay;
+
+aso.suggest({
+  strategy: aso.SEARCH,
+  appId: ['panda', 'zombies', 'hordes'],
+  num: 5})
+.then(console.log);
+```
+
+Returns:
+```js
+[ 'game', 'features', 'zombie', 'zombies', 'way' ]
+```
 
 ### App keywords
 
