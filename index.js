@@ -1,5 +1,7 @@
 'use strict';
 
+require('promise-log')(Promise);
+
 const gplay = require('./lib/stores/gplay');
 const itunes = require('./lib/stores/itunes');
 const constants = require('./lib/constants');
