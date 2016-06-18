@@ -8,6 +8,10 @@
   },
   "author": "Facundo Olano",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facundoolano/aso"
+  },
   "dependencies": {
     "app-store-scraper": "^0.3.1",
     "google-play-scraper": "^2.1.0",
