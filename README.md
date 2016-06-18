@@ -230,6 +230,60 @@ Returns:
 [ 'game', 'features', 'zombie', 'zombies', 'way' ]
 ```
 
+### App visibility score
+
+The `visibility` function gives an estimation of the app's discoverability within
+the store. The scores are built aggregating how well the app ranks for its target
+keywords, the traffic score for those keywords and how the app ranks in the
+top global and category rankings.
+
+The only argument to the function is the App ID (package id for Google Play and
+either numerical or bundle ID for iTunes).
+
+Google Play example:
+```js
+const aso = require('aso').gplay;
+
+aso.visibility('com.dxco.pandavszombies').then(console.log);
+```
+
+Returns:
+
+```js
+{ keywords:
+   { 'panda vs zombies': { traffic: 2.94, rank: 1, score: 29.4 },
+     rocky: { traffic: 7.81, rank: 74, score: 57.48 },
+     'panda vs zombie': { traffic: 3.49, rank: 8, score: 34.03 },
+     'panda warrior': { traffic: 1.47, rank: 5, score: 14.49 },
+     'zombie elvis': { traffic: 3.3, rank: 1, score: 33 },
+     meatloaf: { traffic: 5.79, rank: 16, score: 54.77 },
+     ftw: { traffic: 2.88, rank: 58, score: 22.87 } },
+  collections:
+   { global: { rank: undefined, score: 0 },
+     category: { rank: undefined, score: 0 } },
+  score: 246.04 }
+```
+
+iTunes example:
+
+```js
+const aso = require('aso').gplay;
+
+aso.visibility(284882215) // ID for the facebook app
+  .then(console.log);
+```
+
+Returns:
+```js
+{ keywords:
+   { facebook: { traffic: 9.55, rank: 1, score: 95.5 },
+     friends: { traffic: 7.21, rank: 2, score: 71.74 } },
+  collections:
+   { global: { rank: 3, score: 991 },
+     category: { rank: 2, score: 99.5 } },
+  score: 1257.74 }
+```
+
 ### App keywords
 
 The `app` function returns an array of keywords extracted from title and description
