@@ -7,6 +7,23 @@ or [app-store-scraper](https://github.com/facundoolano/app-store-scraper) to
 gather data, so bear in mind a lot of requests are performed under the hood
 and you may hit throttling limits when making too many calls in a short period of time.
 
+* [Installation](#installation)
+* [API reference](#api-reference)
+   * [Keyword Scores](#keyword-scores)
+      * [Difficulty](#difficulty)
+      * [Traffic](#traffic)
+   * [Keyword suggestions](#keyword-suggestions)
+      * [Suggestions by category](#suggestions-by-category)
+      * [Suggestions by similarity](#suggestions-by-similarity)
+      * [Suggestions by competition](#suggestions-by-competition)
+      * [Suggestions by an arbitrary list of apps](#suggestions-by-an-arbitrary-list-of-apps)
+      * [Suggestions based on seed keywords](#suggestions-based-on-seed-keywords)
+      * [Suggestions based on search hints](#suggestions-based-on-search-hints)
+   * [App visibility score](#app-visibility-score)
+   * [App Keywords](#app-keywords)
+      * [A note on keyword relevancy for iTunes](#a-note-on-keyword-relevancy-for-itunes)
+
+
 ## Installation
 
 ```
