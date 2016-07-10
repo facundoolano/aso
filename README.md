@@ -200,7 +200,7 @@ const aso = require('./index').gplay;
 
 aso.suggest({
   strategy: aso.ARBITRARY,
-  appId: ['com.dxco.pandavszombies'],
+  apps: ['com.dxco.pandavszombies'],
   num: 5})
 .then(console.log);
 ```
@@ -218,7 +218,7 @@ const aso = require('./index').gplay;
 
 aso.suggest({
   strategy: aso.KEYWORDS,
-  appId: ['panda', 'zombies', 'hordes'],
+  keywords: ['panda', 'zombies', 'hordes'],
   num: 5})
 .then(console.log);
 ```
@@ -237,7 +237,7 @@ const aso = require('./index').gplay;
 
 aso.suggest({
   strategy: aso.SEARCH,
-  appId: ['panda', 'zombies', 'hordes'],
+  keywords: ['panda', 'zombies', 'hordes'],
   num: 5})
 .then(console.log);
 ```
