@@ -32,12 +32,12 @@ npm install aso
 
 ## API Reference
 
-The same API is exposed for the iTunes and Google Play stores through the `itunes`
-and `gplay` objects respectively:
+The module exports a function to build a client that will query either iTunes (`'itunes'`)
+or Google Play (`'gplay'`):
 
 ```js
-const gplay = require('aso').gplay;
-const itunes = require('aso').itunes;
+const gplay = require('aso')('gplay');
+const itunes = require('aso')('itunes');
 
 // do stuff with google play
 gplay.scores('panda').then(console.log);
@@ -57,7 +57,7 @@ convenience of targeting that keyword.
 The only argument is the keyword itself:
 
 ```js
-const aso = require('aso').gplay;
+const aso = require('aso')('gplay');
 
 aso.scores('panda').then(console.log)
 ```
@@ -143,7 +143,7 @@ keywords and then run the `scores` function on them to analize their quality.
 Looks at apps in the same category as the one given.
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.CATEGORY,
@@ -161,7 +161,7 @@ Returns:
 Looks at apps marked by Google Play as "similar". For iTunes the "customers also bought" apps are used instead (which may not necessarily be similar to the given app).
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.SIMILAR,
@@ -179,7 +179,7 @@ Returns:
 Looks at apps that target the same keywords as the one given.
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.COMPETITION,
@@ -196,7 +196,7 @@ Returns:
 #### Suggestions by an arbitrary list of apps
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.ARBITRARY,
@@ -214,7 +214,7 @@ Returns:
 Look at apps that target one of the given seed keywords.
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.KEYWORDS,
@@ -233,7 +233,7 @@ Given a set of seed keywords, infer a new set from the search completion suggest
   results.
 
 ```js
-const aso = require('./index').gplay;
+const aso = require('aso')('gplay');
 
 aso.suggest({
   strategy: aso.SEARCH,
@@ -259,7 +259,7 @@ either numerical or bundle ID for iTunes).
 
 Google Play example:
 ```js
-const aso = require('aso').gplay;
+const aso = require('aso')('gplay');
 
 aso.visibility('com.dxco.pandavszombies').then(console.log);
 ```
@@ -284,7 +284,7 @@ Returns:
 iTunes example:
 
 ```js
-const aso = require('aso').gplay;
+const aso = require('aso')('gplay');
 
 aso.visibility(284882215) // ID for the facebook app
   .then(console.log);
@@ -307,7 +307,7 @@ The `app` function returns an array of keywords extracted from title and descrip
 of the app. The only argument is the Google Play ID of the application (the `?id=` parameter on the url).
 
 ```js
-const aso = require('aso').gplay;
+const aso = require('aso')('gplay');
 
 aso.app('com.dxco.pandavszombies').then(console.log)
 ```
@@ -346,3 +346,21 @@ keywords based on description may not have a big weight on iTunes searches.
 
 Google Play, on the other hand, doesn't have a keywords field and so the description is
 expected to contain most of the app's targeted keywords.
+
+### Store backend configuration
+
+An object can be passed as a second argument to the client builder function, with
+options to override the behavior of [google-play-scraper](https://github.com/facundoolano/google-play-scraper)
+and [app-store-scraper](https://github.com/facundoolano/app-store-scraper).
+The given options will be included in every method call to the stores.
+This can be used, for example, to target a differnt country than the default `'us'`:
+
+```js
+const itunesRussia = require('aso')('itunes', { country: 'ru' });
+
+// do stuff with itunes
+itunesRussia.scores('panda').then(console.log);
+```
+
+Other options that may be useful are `cache` and `throttle`. See the reference
+of each scraper for all the available options.
