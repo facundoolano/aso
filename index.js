@@ -2,8 +2,11 @@
 
 require('promise-log')(Promise);
 
-const gplay = require('./lib/stores/gplay');
-const itunes = require('./lib/stores/itunes');
+const STORES = {
+  'gplay': require('./lib/stores/gplay'),
+  'itunes': require('./lib/stores/itunes')
+};
+
 const constants = require('./lib/constants');
 
 const buildApp = require('./lib/app');
@@ -11,16 +14,23 @@ const buildScores = require('./lib/scores');
 const buildSuggest = require('./lib/suggest');
 const buildVisibility = require('./lib/visibility');
 
-module.exports.gplay = Object.assign({
-  app: buildApp(gplay),
-  scores: buildScores(gplay),
-  suggest: buildSuggest(gplay),
-  visibility: buildVisibility(gplay)
-}, constants);
+function getClient (store, opts) {
+  opts = Object.assign({
+    country: 'us',
+    throtle: 20
+  }, opts);
 
-module.exports.itunes = Object.assign({
-  app: buildApp(itunes),
-  scores: buildScores(itunes),
-  suggest: buildSuggest(itunes),
-  visibility: buildVisibility(itunes)
-}, constants);
+  if (!(store in STORES)) {
+    throw Error(`the store name should be one of: ${Object.keys(STORES).join(', ')}`);
+  }
+
+  store = STORES[store](opts);
+  return Object.assign({
+    app: buildApp(store),
+    scores: buildScores(store),
+    suggest: buildSuggest(store),
+    visibility: buildVisibility(store)
+  }, constants);
+}
+
+module.exports = getClient;
