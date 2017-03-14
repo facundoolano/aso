@@ -22,6 +22,7 @@ and you may hit throttling limits when making too many calls in a short period o
    * [App visibility score](#app-visibility-score)
    * [App Keywords](#app-keywords)
       * [A note on keyword relevancy for iTunes](#a-note-on-keyword-relevancy-for-itunes)
+   * [Store backend configuration](#store-backend-configuration)
 
 
 ## Installation
