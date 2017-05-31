@@ -365,3 +365,7 @@ itunesRussia.scores('panda').then(console.log);
 
 Other options that may be useful are `cache` and `throttle`. See the reference
 of each scraper for all the available options.
+
+### Note about Google Play performance
+
+While iTunes provides an API to search apps with all their details, getting data from Google Play usually requires making a request for the search and then additional requests to get the details for each resulting app, then parsing the HTML. This means that most of the functions of this module (specially scores) will be muchs slower for Google Play than for iTunes (taking even minutes). This is expected given that data is scraped from Google Play in real time on every call. This can be partially mitigated using memoization, at the expense of memory usage, but a better approach (outside the scope of this project) to get faster results would be to periodically scan Google Play, save the data to a database and query that for score calculations.
