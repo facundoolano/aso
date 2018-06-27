@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "app-store-scraper": "^0.6.0",
-    "google-play-scraper": "^3.2.3",
+    "google-play-scraper": "^6.1.0",
     "nlcst-to-string": "^1.1.0",
     "promise-log": "^0.1.0",
     "ramda": "^0.21.0",
