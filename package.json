@@ -1,5 +1,5 @@
 {
-  "name": "c",
+  "name": "aso",
   "version": "1.0.0",
   "description": "Tools for app store optimization on iTunes and Google Play",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/facundoolano/aso.git"
+    "url": "https://github.com/facundoolano/aso.git"
   },
   "dependencies": {
     "app-store-scraper": "^0.6.0",
