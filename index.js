@@ -23,7 +23,7 @@ function getClient (store, opts) {
   if (R.is(String, store)) {
     opts = Object.assign({
       country: 'us',
-      throtle: 20
+      throttle: 20
     }, opts);
     if (!(store in STORES)) {
       throw Error(`the store name should be one of: ${Object.keys(STORES).join(', ')}`);
